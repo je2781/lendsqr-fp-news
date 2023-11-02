@@ -1,0 +1,30 @@
+const Colors = {
+    primary500: '#4425F5',
+    primary400: '#3E64FF',
+    primary200: '#6798E1',
+    primary100: '#8696BB',
+    primary50: '#B2DDFF',
+    secondary50: '#F6F8FA',
+    secondary100: '#FEFEFE',
+    secondary200: '#C2BCBC',
+    secondary300: '#979797',
+    secondary400: '#717171',
+    secondary500: '#555555',
+    secondary800: '#2B2B2B',
+    secondary900: '#191d23',
+    secondary950: '#1D1E25',
+    indigo500: '#643FDB',
+    indigo200: '#8365E2',
+    indigo50: "#cac1e9",
+    amber500: '#FCC500',
+    amber200: '#e6c85e',
+    amber50: '#e7ddba',
+    green300: '#7AEC53',
+    green400: '#27AE60',
+    green500: '#159900',
+    error500: '#E32654',
+    error100: '#f9beda',
+
+}
+
+export default Colors;

@@ -1,0 +1,1 @@
+// export type Article = Record<'clean_url' | 'topic' | 'title' | 'published_date', any >;

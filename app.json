@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "lendsqrFpNews",
+    "orientation": "default",
+    "slug": "lendsqrFpNews",
+    "version": "1.0.0",
+    "splash": {
+      "image": "./assets/images/splash_image.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.je278.lendsqrFpNews"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.je278.lendsqrFpNews"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fb717e87-5c30-466e-850e-77ae37d43ed3"
+      }
+    },
+    "scheme": "com.je278.lendsqrFpNews"
+  }
+}

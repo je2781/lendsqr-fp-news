@@ -1,0 +1,65 @@
+{
+  "cli": {
+    "version": ">= 5.6.0"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "814937812947-prqjpoliip0f6tinvgt1ge82c4n89uq9.apps.googleusercontent.com",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "814937812947-joqdpm9vsdkuflt3a141q16a2bq0n10p.apps.googleusercontent.com",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
+        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
+        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "814937812947-prqjpoliip0f6tinvgt1ge82c4n89uq9.apps.googleusercontent.com",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "814937812947-joqdpm9vsdkuflt3a141q16a2bq0n10p.apps.googleusercontent.com",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
+        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
+        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+      }
+    },
+    "test": {
+      "env": {
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "814937812947-prqjpoliip0f6tinvgt1ge82c4n89uq9.apps.googleusercontent.com",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "814937812947-joqdpm9vsdkuflt3a141q16a2bq0n10p.apps.googleusercontent.com",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
+        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
+        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
+        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
