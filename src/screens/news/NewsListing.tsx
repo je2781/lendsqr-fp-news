@@ -57,7 +57,7 @@ export default function NewsListing() {
   );
   return (
     <SafeAreaView
-      style={{ flex: 1, paddingVertical: 8, paddingHorizontal: 16 }}
+      style={{ flex: 1, paddingHorizontal: 16 }}
     >
       {firebaseIsInitializing ? (
         <View

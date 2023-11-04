@@ -1,6 +1,5 @@
 import axios from "axios";
 import { NewsRepoImpl } from "./news-repo-interface";
-import { Alert } from "react-native";
 import { BASE_NEWS_API } from "../../constants/base-api";
 
 class NewsRepo implements NewsRepoImpl {

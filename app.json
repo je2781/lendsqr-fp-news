@@ -5,13 +5,11 @@
     "slug": "lendsqrFpNews",
     "version": "1.0.0",
     "splash": {
-      "image": "./assets/images/splash_image.png",
+      "image": "./src/assets/images/splash_image.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.je278.lendsqrFpNews",
       "googleServicesFile": "./android/app/google-services.json"
@@ -21,7 +19,10 @@
       "bundleIdentifier": "com.je278.lendsqrFpNews",
       "googleServicesFile": "./ios/lendsqrFpNews.xcodeproj/project.xcworkspace/GoogleService-Info.plist"
     },
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/crashlytics"
+    ],
     "extra": {
       "eas": {
         "projectId": "fb717e87-5c30-466e-850e-77ae37d43ed3"

@@ -17,7 +17,7 @@ export function authenticateUser(token: string) {
 export function logoutUser() {
   return (dispatch: AppDispatch) => {
     AsyncStorage.removeItem("token").then((_) => {
-      dispatch(authActions.logout({}));
+      dispatch(authActions.logout(null));
     });
   };
 }
