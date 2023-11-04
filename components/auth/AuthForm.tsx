@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,22 +8,17 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import * as Google from "expo-auth-session/providers/google";
-import { useDispatch } from "react-redux";
+import auth from "@react-native-firebase/auth";
 import Input from "../ui/Input";
 import Colors from "../../constants/Colors";
 import IconButton from "../ui/IconButton";
 import Button from "../ui/Button";
 import FlatButton from "../ui/FlatButton";
 import Strings from "../../constants/Strings";
-import { auth } from "../../firebaseConfig";
-import {
-  onAuthStateChanged,
-} from "firebase/auth";
-import { authenticateUser } from "../../store/auth-actions";
-import { handleGoogleAuth } from "../../util/helper/helper";
-import React from "react";
-
+import { authenticateUser } from "../../store/auth-action-creators";
+import authActions from "../../store/auth-slice";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -38,34 +33,58 @@ interface AuthFormProps {
   credentialsInvalid: any;
 }
 
-function AuthForm(props: AuthFormProps) {
-  // Configuring Google Sign-In
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
-    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID
-  });
+function AuthForm({
+  isLogin,
+  onSubmit,
+  isAuthenticating,
+  setCredentialsInvalid,
+  credentialsInvalid,
+}: AuthFormProps) {
   const [enteredEmail, setEnteredEmail] = useState<string>("");
   const [enteredName, setEnteredName] = useState<string>("");
   const [enteredPassword, setEnteredPassword] = useState<string>("");
   const [enteredNumber, setEnteredNumber] = useState<string>("");
   const [isRead, setIsRead] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const firebaseIsInitializing = useAppSelector(
+    (state) => state.auth.isInitializing
+  );
+
+  //configuring google signin
+  GoogleSignin.configure({
+    webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+  });
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
 
   useEffect(() => {
-    handleGoogleAuth(response!);
-  }, [response]);
- 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
+    const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const idToken = await user.getIdToken();
-        //updating redux store with auth token
-        dispatch(authenticateUser(idToken) as any);
+        const token = await user.getIdToken();
+        dispatch(authenticateUser(token));
+        if (firebaseIsInitializing) {
+          dispatch(
+            authActions.setFirebaseInitialization({
+              isInitializing: false,
+            })
+          );
+        }
       }
     });
 
-    return () => unsub();
+    return subscriber; // unsubscribe on unmount
   }, []);
 
   function readTermsNConditions() {
@@ -73,7 +92,7 @@ function AuthForm(props: AuthFormProps) {
   }
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
-    props.setCredentialsInvalid({
+    setCredentialsInvalid({
       email: false,
       fullName: false,
       password: false,
@@ -95,9 +114,8 @@ function AuthForm(props: AuthFormProps) {
     }
   }
 
-  
   function submitHandler() {
-    props.onSubmit({
+    onSubmit({
       email: enteredEmail,
       mobile: enteredNumber,
       password: enteredPassword,
@@ -107,7 +125,7 @@ function AuthForm(props: AuthFormProps) {
 
   function switchAuthModeHandler() {
     // Todo
-    if (props.isLogin) {
+    if (isLogin) {
       navigation.dispatch(StackActions.replace("Register"));
     } else {
       navigation.dispatch(StackActions.replace("SignIn"));
@@ -116,11 +134,11 @@ function AuthForm(props: AuthFormProps) {
 
   return (
     <View>
-      {!props.isLogin && (
+      {!isLogin && (
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "fullName")}
           value={enteredName}
-          isInvalid={props.credentialsInvalid.fullName}
+          isInvalid={credentialsInvalid.fullName}
           icon="person-outline"
           placeholder="Full name"
           placeholderColor={Colors.secondary800}
@@ -131,15 +149,15 @@ function AuthForm(props: AuthFormProps) {
         value={enteredEmail}
         keyboardType="email-address"
         icon="mail-outline"
-        isInvalid={props.credentialsInvalid.email}
+        isInvalid={credentialsInvalid.email}
         placeholder="example@gmail.com"
         placeholderColor={Colors.secondary800}
       />
-      {!props.isLogin && (
+      {!isLogin && (
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "mobile")}
           value={enteredNumber}
-          isInvalid={props.credentialsInvalid.mobile}
+          isInvalid={credentialsInvalid.mobile}
           icon="person-outline"
           keyboardType="phone-pad"
           placeholder="Mobile number"
@@ -154,11 +172,11 @@ function AuthForm(props: AuthFormProps) {
         hasSuffixIcon
         suffixIcon="eye-slash"
         value={enteredPassword}
-        isInvalid={props.credentialsInvalid.password}
+        isInvalid={credentialsInvalid.password}
         placeholder="*********"
         placeholderColor={Colors.secondary800}
       />
-      {!props.isLogin && (
+      {!isLogin && (
         <View
           style={{
             alignItems: "flex-start",
@@ -197,7 +215,7 @@ function AuthForm(props: AuthFormProps) {
           </Text>
         </View>
       )}
-      {props.isLogin && (
+      {isLogin && (
         <View style={{ alignItems: "flex-end", marginBottom: 8, marginTop: 4 }}>
           <FlatButton color={Colors.secondary500} fontSize={14}>
             {Strings.HForgotPassFlatButton}
@@ -205,9 +223,9 @@ function AuthForm(props: AuthFormProps) {
         </View>
       )}
       <View style={styles.buttons}>
-        {props.isLogin ? (
+        {isLogin ? (
           <>
-            {props.isAuthenticating ? (
+            {isAuthenticating ? (
               <ActivityIndicator size="large" color={Colors.primary500} />
             ) : (
               <Button
@@ -235,7 +253,11 @@ function AuthForm(props: AuthFormProps) {
             <Button
               marginLeft={16}
               buttonBackgroundColor="white"
-              onPress={() => promptAsync()}
+              onPress={() =>
+                onGoogleButtonPress().then(() =>
+                  console.log("Signed in with Google!")
+                )
+              }
               paddingHorizontal={12}
               paddingVertical={10}
               borderRadius={8}
@@ -269,7 +291,7 @@ function AuthForm(props: AuthFormProps) {
           </>
         ) : (
           <>
-            {props.isAuthenticating ? (
+            {isAuthenticating ? (
               <ActivityIndicator size="large" color={Colors.primary500} />
             ) : (
               <Button
@@ -297,7 +319,11 @@ function AuthForm(props: AuthFormProps) {
             <Button
               marginLeft={16}
               buttonBackgroundColor="white"
-              onPress={() => promptAsync()}
+              onPress={() =>
+                onGoogleButtonPress().then(() =>
+                  console.log("Signed in with Google!")
+                )
+              }
               hasLeftExternalIcon
               leftExternalIcon={
                 <Image

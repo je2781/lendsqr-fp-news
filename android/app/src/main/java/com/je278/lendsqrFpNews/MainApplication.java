@@ -3,6 +3,7 @@ package com.je278.lendsqrFpNews;
 import android.app.Application;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
+import com.microsoft.codepush.react.CodePush;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -50,6 +51,11 @@ public class MainApplication extends Application implements ReactApplication {
       protected Boolean isHermesEnabled() {
         return BuildConfig.IS_HERMES_ENABLED;
       }
+
+      @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
   });
 
   @Override

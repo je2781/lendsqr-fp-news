@@ -2,6 +2,7 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import {MaterialIcons, FontAwesome} from "@expo/vector-icons";
 import { useState } from "react";
 import Colors from "../../constants/Colors";
+import React from "react";
 
 interface InputProps{
   hasSuffixIcon?: boolean,
@@ -16,40 +17,51 @@ interface InputProps{
   onUpdateValue: (value: string) => void
 }
 
-function Input(props: InputProps ) {
+function Input({
+  keyboardType,
+  secure,
+  icon,
+  suffixIcon,
+  onUpdateValue,
+  placeholder,
+  hasSuffixIcon,
+  placeholderColor,
+  value,
+  isInvalid,
+}: InputProps ) {
   const [isSecure, setIsSecure] = useState(true);
   return (
     <View style={styles.inputContainer}>
       <View
-        style={[styles.prefixIconContainer, props.isInvalid && styles.inputInvalid]}
+        style={[styles.prefixIconContainer, isInvalid && styles.inputInvalid]}
       >
-        <MaterialIcons name={props.icon} size={19} color={Colors.secondary800} />
+        <MaterialIcons name={icon} size={19} color={Colors.secondary800} />
       </View>
       <TextInput
         style={[
           styles.input,
-          props.isInvalid && styles.inputInvalid,
-          !props.hasSuffixIcon && {
+          isInvalid && styles.inputInvalid,
+          !hasSuffixIcon && {
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
           },
         ]}
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType={props.keyboardType}
-        secureTextEntry={isSecure ? props.secure : undefined}
-        onChangeText={props.onUpdateValue}
-        value={props.value}
-        placeholder={props.placeholder}
-        placeholderTextColor={props.placeholderColor}
+        keyboardType={keyboardType}
+        secureTextEntry={isSecure ? secure : undefined}
+        onChangeText={onUpdateValue}
+        value={value}
+        placeholder={placeholder}
+        placeholderTextColor={placeholderColor}
         // onSubmitEditing={submitData}
       />
-      {props.hasSuffixIcon && (
+      {hasSuffixIcon && (
         <View
-          style={[styles.suffixIconContainer, props.isInvalid && styles.inputInvalid]}
+          style={[styles.suffixIconContainer, isInvalid && styles.inputInvalid]}
         >
           <FontAwesome
-            name={props.suffixIcon}
+            name={suffixIcon}
             size={19}
             color={Colors.secondary800}
             onPress={() => setIsSecure((currentValue) => !currentValue)}

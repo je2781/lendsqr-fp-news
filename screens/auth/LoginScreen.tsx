@@ -14,17 +14,22 @@ import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
 import AuthContent from "../../components/auth/AuthContent";
 import React from "react";
+import type { AppDispatch } from "../../store/index";
+import { useAppDispatch } from "../../store/hooks";
+interface loginProps{
+  loginAction: (token: string) => (dispatch: AppDispatch) => void
+}
 
-export default function LoginScreen(props: {loginAction: any}) {
+export default function LoginScreen({loginAction}: loginProps) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
 
   async function handleLogin(input: { email: string, password: string }) {
     setIsAuthenticating(true);
     try {
       const token = await authRepo.verifyUser(input.email, input.password);
-      dispatch(props.loginAction(token));
+      dispatch(loginAction(token));
     } catch (err) {
       Alert.alert(
         "Authentication failed!",
@@ -41,7 +46,7 @@ export default function LoginScreen(props: {loginAction: any}) {
         <Text style={styles.subTitle}>{Strings.HAuthSubtitle}</Text>
         <View style={{ flex: 1 }}>
           <ScrollView>
-            <KeyboardAvoidingView behavior="position">
+            <KeyboardAvoidingView behavior="padding">
               <AuthContent
                 isLogin={true}
                 onAuthenticate={handleLogin}
@@ -59,7 +64,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     padding: 24,
-    justifyContent: "space-between",
   },
   title: {
     fontFamily: "axiforma-w600",

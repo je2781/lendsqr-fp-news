@@ -13,17 +13,19 @@
       "**/*"
     ],
     "android": {
-      "package": "com.je278.lendsqrFpNews"
+      "package": "com.je278.lendsqrFpNews",
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.je278.lendsqrFpNews"
+      "bundleIdentifier": "com.je278.lendsqrFpNews",
+      "googleServicesFile": "./ios/lendsqrFpNews.xcodeproj/project.xcworkspace/GoogleService-Info.plist"
     },
+    "plugins": ["@react-native-google-signin/google-signin"],
     "extra": {
       "eas": {
         "projectId": "fb717e87-5c30-466e-850e-77ae37d43ed3"
       }
-    },
-    "scheme": "com.je278.lendsqrFpNews"
+    }
   }
 }

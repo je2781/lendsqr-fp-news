@@ -57,6 +57,9 @@ target 'lendsqrFpNews' do
     :flipper_configuration => flipper_config
   )
 
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+  
   post_install do |installer|
     react_native_post_install(
       installer,

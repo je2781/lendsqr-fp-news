@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 
 interface ButtonProps {
   children: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
   color?: string;
   fontSize?: number;
   isTransparent?: boolean;
@@ -20,47 +20,64 @@ interface ButtonProps {
   marginRight?: number;
 }
 
-function Button(props: ButtonProps) {
+function Button({
+  children,
+  onPress,
+  color,
+  fontSize,
+  isTransparent,
+  buttonBackgroundColor,
+  hasLeftExternalIcon,
+  hasRightExternalIcon,
+  borderRadius,
+  fontWeight,
+  paddingHorizontal,
+  paddingVertical,
+  leftExternalIcon,
+  rightExternalIcon,
+  marginLeft,
+  marginRight,
+}: ButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.button,
         {
-          backgroundColor: props.buttonBackgroundColor,
-          borderColor: props.buttonBackgroundColor,
-          borderRadius: props.borderRadius,
-          paddingHorizontal: props.paddingHorizontal,
-          paddingVertical: props.paddingVertical,
+          backgroundColor: buttonBackgroundColor,
+          borderColor: buttonBackgroundColor,
+          borderRadius: borderRadius,
+          paddingHorizontal: paddingHorizontal,
+          paddingVertical: paddingVertical,
         },
         pressed && styles.pressed,
-        props.isTransparent && styles.buttonTransparent,
+        isTransparent && styles.buttonTransparent,
       ]}
-      onPress={props.onPress}
+      onPress={onPress}
     >
       <View
         style={[
           styles.iconContainer,
-          props.hasLeftExternalIcon && props.hasRightExternalIcon
+          hasLeftExternalIcon && hasRightExternalIcon
             ? { justifyContent: "space-between" }
             : { justifyContent: "center" },
         ]}
       >
-        {props.hasLeftExternalIcon && props.leftExternalIcon}
+        {hasLeftExternalIcon && leftExternalIcon}
         <Text
           style={[
             styles.buttonText,
             {
-              marginLeft: props.marginLeft,
-              color: props.color,
-              fontSize: props.fontSize,
-              marginRight: props.marginRight,
-              fontWeight: props.fontWeight,
+              marginLeft: marginLeft,
+              color: color,
+              fontSize: fontSize,
+              marginRight: marginRight,
+              fontWeight: fontWeight,
             },
           ]}
         >
-          {props.children}
+          {children}
         </Text>
-        {props.hasRightExternalIcon && props.rightExternalIcon}
+        {hasRightExternalIcon && rightExternalIcon}
       </View>
     </Pressable>
   );

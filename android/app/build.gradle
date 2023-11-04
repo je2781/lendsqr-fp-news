@@ -102,10 +102,18 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            resValue "string", "CodePushDeploymentKey", '"qMEkWe5Dw9oXwBnZBfdijLEEkyFuNcjiB892u"'
+        }
+        releaseStaging {
+            resValue "string", "CodePushDeploymentKey", '"qMEkWe5Dw9oXwBnZBfdijLEEkyFuNcjiB892u"'
+            // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
+            // Add the following line if not already there
+            matchingFallbacks = ['release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
+            resValue "string", "CodePushDeploymentKey", '"9BXwqsLCwWno7Er8lSABw08wXq3FdigdqTNui"'
             signingConfig signingConfigs.debug
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
@@ -176,5 +184,11 @@ dependencies {
     }
 }
 
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+
 apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle");
 applyNativeModulesAppBuildGradle(project)
+
+apply plugin: 'com.google.gms.google-services'
+
+

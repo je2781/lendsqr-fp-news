@@ -14,18 +14,24 @@ import Strings from "../../constants/Strings";
 import AuthContent from "../../components/auth/AuthContent";
 import authRepo from "../../repository/auth/auth-repo";
 import React from "react";
+import { AppDispatch } from "../../store";
+import { useAppDispatch } from "../../store/hooks";
 
-export default function RegistrationScreen(props: {registerAction: any}) {
+interface registerProps{
+  registerAction: (token: string) => (dispatch: AppDispatch) => void
+}
+
+export default function RegistrationScreen({registerAction}: registerProps) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
 
   async function handleRegistration(input: { email: string, password: string }) {
     setIsAuthenticating(true);
     try {
       const token = await authRepo.createUser(input.email, input.password);
-      dispatch(props.registerAction(token));
-    } catch (err) {
+      dispatch(registerAction(token));
+    } catch (err: any) {
       Alert.alert(
         "Authentication failed!",
         "Could not register your account. Either your credentials are wrong or account already exists"
@@ -42,7 +48,7 @@ export default function RegistrationScreen(props: {registerAction: any}) {
         <Text style={styles.subTitle}>{Strings.HAuthSubtitle}</Text>
         <View style={{ flex: 1 }}>
           <ScrollView>
-            <KeyboardAvoidingView behavior="position">
+            <KeyboardAvoidingView behavior="padding">
               <AuthContent
                 onAuthenticate={handleRegistration}
                 isAuthenticating={isAuthenticating}
@@ -59,7 +65,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     padding: 24,
-    justifyContent: "space-between",
   },
   title: {
     fontFamily: "axiforma-w600",

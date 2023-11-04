@@ -8,14 +8,14 @@ interface flatButtonProps{
   fontSize?: number,
 }
 
-function FlatButton(props: flatButtonProps) {
+function FlatButton({ children, onPress, color, fontSize}: flatButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
-      onPress={props.onPress}
+      onPress={onPress}
     >
       <View>
-        <Text style={[styles.buttonText, {color: props.color, fontSize: props.fontSize}]}>{props.children}</Text>
+        <Text style={[styles.buttonText, {color: color, fontSize: fontSize}]}>{children}</Text>
       </View>
     </Pressable>
   );

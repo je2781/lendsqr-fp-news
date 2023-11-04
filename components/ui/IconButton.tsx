@@ -14,18 +14,27 @@ interface IconButtonProps {
   marginRight?: number;
 }
 
-function IconButton(props: IconButtonProps) {
+function IconButton({
+  icon,
+  color,
+  size,
+  onPress,
+  marginTop,
+  marginRight,
+  hasExternalIcon,
+  externalIcon,
+}: IconButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { marginTop: props.marginTop, marginRight: props.marginRight },
+        { marginTop: marginTop, marginRight: marginRight },
         pressed && styles.pressed,
       ]}
-      onPress={props.onPress}
+      onPress={onPress}
     >
-      {!props.hasExternalIcon && <Ionicons name={props.icon} color={props.color} size={props.size} />}
-      {props.hasExternalIcon && props.externalIcon}
+      {!hasExternalIcon && <Ionicons name={icon} color={color} size={size} />}
+      {hasExternalIcon && externalIcon}
     </Pressable>
   );
 }

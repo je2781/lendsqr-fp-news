@@ -5,6 +5,7 @@ const initialAuthState = {
   login: false,
   registration: false,
   authToken: null,
+  isInitializing: true
 };
 
 export const authSlice = createSlice({
@@ -16,6 +17,9 @@ export const authSlice = createSlice({
     },
     switchToRegistration(state, action) {
       state.registration = true;
+    },
+    setFirebaseInitialization(state, action) {
+      state.isInitializing = action.payload.isInitializing;
     },
     authenticate(state, action) {
         state.authToken = action.payload.token;

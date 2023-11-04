@@ -1,25 +1,29 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View} from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import AuthForm from "./AuthForm";
 import React from "react";
 
-interface AuthContentProps{
+interface AuthContentProps {
   isLogin?: boolean;
-  onAuthenticate: (input: { email: string, password: string }) => void;
+  onAuthenticate: (input: { email: string; password: string }) => void;
   isAuthenticating: boolean;
 }
 
-function AuthContent(props: AuthContentProps) {
+function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentProps) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
-    firstName: false,
-    lastName: false,
+    fullName: false,
+    mobile: false,
   });
 
-
-  function submitHandler(credentials: {email: string ,fullName: string ,password: string, mobile: string}) {
-    let { email, fullName, password, mobile} = credentials;
+  function submitHandler(credentials: {
+    email: string;
+    fullName: string;
+    password: string;
+    mobile: string;
+  }) {
+    let { email, fullName, password, mobile } = credentials;
 
     email = email.trim();
     password = password.trim();
@@ -31,33 +35,53 @@ function AuthContent(props: AuthContentProps) {
     const fullNameIsValid = fullName.length > 0;
     const mobileIsValid = mobile.length > 10;
 
-    if (
-      !emailIsValid ||
-      !passwordIsValid ||
-      (!props.isLogin && (!fullNameIsValid || !mobileIsValid))
-    ) {
-      Alert.alert("Invalid input", "Please check your entered credentials.");
-      setCredentialsInvalid({
+    if (!emailIsValid) {
+      Alert.alert("Invalid input", "Please check that you have a valid email");
+      setCredentialsInvalid((prevState) => ({
+        ...prevState,
         email: !emailIsValid,
-        firstName: !fullNameIsValid,
-        password: !passwordIsValid,
-        lastName: !mobileIsValid,
-      });
+      }));
       return;
     }
-    props.onAuthenticate({ email, password });
+    if (!passwordIsValid) {
+      Alert.alert(
+        "Invalid input",
+        "Password has to be greater than 6 characters"
+      );
+      setCredentialsInvalid((prevState) => ({
+        ...prevState,
+        password: !passwordIsValid,
+      }));
+      return;
+    }
+    if (!isLogin && !fullNameIsValid) {
+      Alert.alert("Invalid input", "Please provide your full name");
+      setCredentialsInvalid((prevState) => ({
+        ...prevState,
+        fullName: !fullNameIsValid,
+      }));
+      return;
+    }
+    if (!isLogin && !mobileIsValid) {
+      Alert.alert("Invalid input", "Please provide a valid mobile number");
+      setCredentialsInvalid((prevState) => ({
+        ...prevState,
+        mobile: !mobileIsValid,
+      }));
+      return;
+    }
+    onAuthenticate({ email, password });
   }
 
   return (
     <View style={styles.authContent}>
       <AuthForm
-        isLogin={props.isLogin!}
+        isLogin={isLogin!}
         onSubmit={submitHandler}
-        isAuthenticating={props.isAuthenticating}
+        isAuthenticating={isAuthenticating}
         credentialsInvalid={credentialsInvalid}
         setCredentialsInvalid={setCredentialsInvalid}
       />
-      
     </View>
   );
 }
@@ -67,5 +91,5 @@ export default AuthContent;
 const styles = StyleSheet.create({
   authContent: {
     marginTop: 2,
-  }
+  },
 });

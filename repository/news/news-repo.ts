@@ -1,18 +1,17 @@
 import axios from "axios";
 import { NewsRepoImpl } from "./news-repo-interface";
 import { Alert } from "react-native";
-
+import { BASE_NEWS_API } from "../../constants/base-api";
 
 class NewsRepo implements NewsRepoImpl {
-  async searchNews(
-    options: Record<"method" | "headers" | "url" | "params", any>
-  ) {
+  async searchNews() {
     try {
-      const response = await axios.request(options);
+      const response = await axios.get(
+        `${BASE_NEWS_API}?country=ng&apiKey=${process.env.EXPO_PUBLIC_NEWS_API_KEY}`
+      );
       return response.data.articles;
     } catch (error) {
-      Alert.alert( "Download failed!",
-      "Could not download news articles for your region");
+      throw error;
     }
   }
 }

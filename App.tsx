@@ -7,36 +7,37 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { Provider, useDispatch, useSelector } from "react-redux"; // Updated import
 import AuthStack from "./components/auth/AuthStack";
-import { authenticateUser} from "./store/auth-actions";
-import * as WebBrowser from "expo-web-browser";
+import { authenticateUser } from "./store/auth-action-creators";
 import AuthenticatedStack from "./components/auth/AuthenticatedStack";
 import store from "./store/index";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import codePush from "react-native-code-push";
+
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
-//initialize browser to complete authentication in a pop up window
-WebBrowser.maybeCompleteAuthSession();
+
 
 function Root() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const dispatch = useDispatch();
-  const authToken = useSelector((state: any) => state.auth.authToken); // Removed type annotation
+  const dispatch = useAppDispatch();
+  const authToken = useAppSelector((state) => state.auth.authToken); // Removed type annotation
 
+ 
   useEffect(() => {
     async function prepare() {
       try {
         // Pre-load fonts
         await Font.loadAsync({
-          axiforma: require("./assets/fonts/Axiforma-Regular.ttf"),
+          "axiforma": require("./assets/fonts/Axiforma-Regular.ttf"),
           "axiforma-w600": require("./assets/fonts/Axiforma-Bold.ttf"),
           "gothamPro-w400": require("./assets/fonts/GothamPro-Medium.ttf"),
         });
 
-
         // Retrieving token and using it for automatic login
         const storedToken = await AsyncStorage.getItem("token");
         if (storedToken) {
-          dispatch(authenticateUser(storedToken) as any);
+          dispatch(authenticateUser(storedToken));
         }
       } catch (error) {
         console.warn(error);
@@ -62,13 +63,13 @@ function Root() {
   return (
     <SafeAreaView style={styles.rootContainer} onLayout={onLayoutRootView}>
       <NavigationContainer>
-        {!!authToken ? <AuthenticatedStack /> : <AuthStack />}
+        {!!authToken ? <AuthenticatedStack /> : <AuthStack/>}
       </NavigationContainer>
     </SafeAreaView>
   );
 }
 
-export default function App() {
+function App() {
   return (
     <>
       <Provider store={store}>
@@ -79,8 +80,12 @@ export default function App() {
   );
 }
 
+export default codePush(App);
+
+
+
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1,
+    flex: 1
   },
 });

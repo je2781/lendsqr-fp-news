@@ -26,7 +26,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="lendsqrFpNews"/>
-        <data android:scheme="com.je278.lendsqrFpNews"/>
         <data android:scheme="exp+lendsqrfpnews"/>
         <data android:scheme="com.je278.lendsqrFpNews"/>
       </intent-filter>
