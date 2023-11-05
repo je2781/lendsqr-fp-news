@@ -19,40 +19,19 @@
       },
       "env": {
         "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
-        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
-        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
-        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
-        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
-        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
-        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
-        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
-        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+        "EXPO_PUBLIC_NEWS_API_KEY": "13734acdd0a74dc0bd1878f093523604"
       }
     },
     "production": {
       "env": {
         "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
-        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
-        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
-        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
-        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
-        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
-        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
-        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
-        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+        "EXPO_PUBLIC_NEWS_API_KEY": "13734acdd0a74dc0bd1878f093523604"
       }
     },
     "test": {
       "env": {
         "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
-        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "lendsqr-fp-news-12462.firebaseapp.com",
-        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyC-p3uvgQq_dLfoZ-u2143KI0ggAALms4k",
-        "EXPO_PUBLIC_FIREBASE_MES_SENDER_ID": "814937812947",
-        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "lendsqr-fp-news-12462",
-        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:814937812947:web:2612b4411d60f1fdcb0926",
-        "EXPO_PUBLIC_FIREBASE_STORAGE_BUC": "lendsqr-fp-news-12462.appspot.com",
-        "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-PL5FQCZ0L7",
-        "EXPO_PUBLIC_RAPID_API_KEY": "bec138ffbamshe40acae4c71ba67p1b3804jsnf123c0f3ce86"
+        "EXPO_PUBLIC_NEWS_API_KEY": "13734acdd0a74dc0bd1878f093523604"
       }
     }
   },

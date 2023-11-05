@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import AuthForm from "./AuthForm";
 import React from "react";
+import crashlytics from '@react-native-firebase/crashlytics';
 
 interface AuthContentProps {
   isLogin?: boolean;
@@ -23,6 +24,7 @@ function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentPro
     password: string;
     mobile: string;
   }) {
+    crashlytics().log('submitting user data for email/password authentication');
     let { email, fullName, password, mobile } = credentials;
 
     email = email.trim();

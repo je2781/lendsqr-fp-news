@@ -15,7 +15,8 @@ import type { Article } from "../../types/types";
 import Colors from "../../constants/Colors";
 import Time from "./Time";
 import Card from "../ui/Card";
-
+import crashlytics from '@react-native-firebase/crashlytics';
+import analytics from '@react-native-firebase/analytics';
 interface NewsItemProps {
   article: Article;
 }
@@ -35,6 +36,7 @@ export default function NewsItem({ article }: NewsItemProps) {
         <Pressable
           style={({ pressed }) => pressed && styles.pressed}
           onPress={() => {
+            crashlytics().log('user pushes newsdetails screen onto newslisting screen');
             navigation.dispatch(
               StackActions.push("NewsDetails", {
                 article: article,
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "axiforma-w600",
     fontSize: 10,
+    textAlign: 'left'
     // color: Colors.secondary800,
   },
   pressed: {

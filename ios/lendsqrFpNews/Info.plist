@@ -12,6 +12,12 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    	<string>whatsapp</string>
+    	<string>youtube</string>
+    	<string>instagram</string>
+	</array>
 	<key>CodePushDeploymentKey</key>
 	<string>ApifESclICWZ5fbV1b2TeeEsmSamPmXD9Oa-5</string>
 	<key>CFBundleURLTypes</key>

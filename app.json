@@ -21,12 +21,14 @@
     },
     "plugins": [
       "@react-native-google-signin/google-signin",
-      "@react-native-firebase/crashlytics"
+      "@react-native-firebase/crashlytics",
+      "@react-native-firebase/perf"
     ],
     "extra": {
       "eas": {
         "projectId": "fb717e87-5c30-466e-850e-77ae37d43ed3"
       }
-    }
+    },
+    "scheme": "myapp"
   }
 }

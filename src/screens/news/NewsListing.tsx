@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { HStack, Avatar } from "@react-native-material/core";
 import newsRepo from "../../repository/news/news-repo";
+import crashlytics from '@react-native-firebase/crashlytics';
 import {
   ActivityIndicator,
   Alert,
+  Button,
   FlatList,
   ScrollView,
   View,
@@ -13,7 +15,7 @@ import { Article } from "../../types/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Colors from "../../constants/Colors";
-import authActions from '../../store/auth-slice';
+import authActions from "../../store/auth-slice";
 
 export default function NewsListing() {
   const [articlesArr, setArticlesArr] = useState<Article[]>([]);
@@ -22,6 +24,7 @@ export default function NewsListing() {
   useEffect(() => {
     async function retrieveNewsArticles() {
       try {
+        crashlytics().log('retrieving articles from news api');
         const articles = await newsRepo.searchNews();
         for (const article of articles) {
           setArticlesArr((prevState) => [
@@ -38,28 +41,31 @@ export default function NewsListing() {
             },
           ]);
         }
-      } catch (err) {
+      } catch (err: any) {
+        crashlytics().recordError(err);
         Alert.alert(
           "Download failed!",
           "Could not download news articles for your region"
         );
-        dispatch(authActions.setFirebaseInitialization({
-          isInitializing: false
-        }));
+      } finally {
+        crashlytics().log('articles retrieved from news api');
+        dispatch(
+          authActions.setNewsApiInitialization({
+            isInitializing: false,
+          })
+        );
       }
     }
 
     retrieveNewsArticles();
   }, []);
 
-  const firebaseIsInitializing = useAppSelector(
+  const newsApiIsInitializing = useAppSelector(
     (state) => state.auth.isInitializing
   );
   return (
-    <SafeAreaView
-      style={{ flex: 1, paddingHorizontal: 16 }}
-    >
-      {firebaseIsInitializing ? (
+    <SafeAreaView style={{ flex: 1, paddingHorizontal: 8 }}>
+      {newsApiIsInitializing ? (
         <View
           style={{
             flex: 1,
@@ -70,11 +76,13 @@ export default function NewsListing() {
           <ActivityIndicator size="large" color={Colors.primary500} />
         </View>
       ) : (
+        <>
         <FlatList
           data={articlesArr}
           renderItem={({ item }) => <NewsItem article={item} />}
           keyExtractor={(item, index) => index.toString()}
         />
+        </>
       )}
     </SafeAreaView>
   );

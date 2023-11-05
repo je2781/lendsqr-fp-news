@@ -1,7 +1,15 @@
-import React from "react";
-import { Image, View, StyleSheet, Text, Linking } from "react-native";
-import { Article } from "../../types/types";
+import React, { useEffect } from "react";
+import {
+  Image,
+  View,
+  StyleSheet,
+  Text,
+  Linking,
+  BackHandler,
+} from "react-native";
+import type { Article } from "../../types/types";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {StackActions} from "@react-navigation/native";
 
 interface newsDetailsProps {
   navigation: any;
@@ -10,30 +18,39 @@ interface newsDetailsProps {
 
 export default function NewsDetails({ navigation, route }: newsDetailsProps) {
   const article: Article = route.params.article;
+
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 16 }}>
       <View>
-        {article.image_url ? (
+        {article.image_url != null ? (
           <Image
             source={article.image_url}
             alt="Image of article"
-            style={{ width: "100%", height: 400, resizeMode: "cover" }}
+            style={{ width: "100%", height: 150, resizeMode: "cover" }}
           />
         ) : (
-          <Text style={{textAlign: 'center'}}>{article.title}</Text>
+          <Text style={{ textAlign: "center" }}>{article.title}</Text>
         )}
       </View>
-      <View style={{marginVertical: 24}}>
-        <Text style={{textAlign: 'center'}}>{article.content ? article.content : "No Content"}</Text>
+      <View style={{ marginVertical: 24 }}>
+        <Text style={{ textAlign: "center" }}>
+          {article.content ? article.content : "No Content"}
+        </Text>
       </View>
-      <View style={{flexDirection: 'column', alignItems: 'center'}}>
+      <View style={{ flexDirection: "column", alignItems: "center" }}>
         <Text>source: {article.source_name}</Text>
 
         <Text>
           For full article visit:{" "}
           <Text
             style={{ color: "blue" }}
-            onPress={() => Linking.openURL(article.article_url)}
+            onPress={async () => {
+              navigation.dispatch(
+                StackActions.replace("WebView", {
+                  url: article.article_url
+                })
+              );
+            }}
           >
             article url
           </Text>
@@ -42,6 +59,3 @@ export default function NewsDetails({ navigation, route }: newsDetailsProps) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-});

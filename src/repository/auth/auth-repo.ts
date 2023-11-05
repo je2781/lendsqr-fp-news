@@ -8,16 +8,18 @@ class AuthRepo implements AuthRepoImpl {
     const userCred = await auth().createUserWithEmailAndPassword(email, password);
 
     const token = await userCred.user.getIdToken();
+    const uid = userCred.user.uid;
 
-    return token;
+    return [uid, token];
   }
 
   async verifyUser(email: string, password: string) {
     const userCred = await auth().signInWithEmailAndPassword(email, password);
 
     const token = await userCred.user.getIdToken();
+    const uid = userCred.user.uid;
 
-    return token;
+    return [uid, token];
   }
 
 }

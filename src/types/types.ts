@@ -1,3 +1,5 @@
+import {AxiosRequestConfig} from 'axios';
+
 export type Article = Record<
   | "description"
   | "source_name"
@@ -9,3 +11,9 @@ export type Article = Record<
   | "author",
   any
 >;
+
+export interface AxiosRequestConfigWithMetaData extends AxiosRequestConfig {
+  meta: any;
+  method: "GET" | "POST" | "PUT",
+  url: string;
+}

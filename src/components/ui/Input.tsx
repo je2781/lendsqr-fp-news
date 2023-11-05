@@ -1,67 +1,67 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import {MaterialIcons, FontAwesome} from "@expo/vector-icons";
-import { useState } from "react";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { forwardRef,  useState } from "react";
 import Colors from "../../constants/Colors";
 import React from "react";
 
-interface InputProps{
-  hasSuffixIcon?: boolean,
-  placeholder?: string,
-  secure?: boolean,
-  icon?: any,
-  suffixIcon?: any,
-  keyboardType?: any,
-  placeholderColor?: any,
-  value: string,
-  isInvalid?: boolean,
-  onUpdateValue: (value: string) => void
+interface InputProps {
+  hasSuffixIcon?: boolean;
+  placeholder?: string;
+  secure?: boolean;
+  icon?: any;
+  suffixIcon?: any;
+  returnKeyType?: any;
+  blurOnSubmit?: boolean;
+  ref?: any;
+  keyboardType?: any;
+  placeholderColor?: any;
+  value: string;
+  onSubmitEditing?: () => void;
+  isInvalid?: boolean;
+  onUpdateValue: (value: string) => void;
 }
 
-function Input({
-  keyboardType,
-  secure,
-  icon,
-  suffixIcon,
-  onUpdateValue,
-  placeholder,
-  hasSuffixIcon,
-  placeholderColor,
-  value,
-  isInvalid,
-}: InputProps ) {
+
+const Input = forwardRef<TextInput, InputProps>((
+  props, ref
+) => {
   const [isSecure, setIsSecure] = useState(true);
+
   return (
     <View style={styles.inputContainer}>
       <View
-        style={[styles.prefixIconContainer, isInvalid && styles.inputInvalid]}
+        style={[styles.prefixIconContainer, props.isInvalid && styles.inputInvalid]}
       >
-        <MaterialIcons name={icon} size={19} color={Colors.secondary800} />
+        <MaterialIcons name={props.icon} size={19} color={Colors.secondary800} />
       </View>
       <TextInput
         style={[
           styles.input,
-          isInvalid && styles.inputInvalid,
-          !hasSuffixIcon && {
+          props.isInvalid && styles.inputInvalid,
+          !props.hasSuffixIcon && {
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
           },
         ]}
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType={keyboardType}
-        secureTextEntry={isSecure ? secure : undefined}
-        onChangeText={onUpdateValue}
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={placeholderColor}
-        // onSubmitEditing={submitData}
+        keyboardType={props.keyboardType}
+        ref={ref}
+        returnKeyType={props.returnKeyType}
+        secureTextEntry={isSecure ? props.secure : undefined}
+        onChangeText={props.onUpdateValue}
+        value={props.value}
+        blurOnSubmit={props.blurOnSubmit}
+        placeholder={props.placeholder}
+        placeholderTextColor={props.placeholderColor}
+        onSubmitEditing={props.onSubmitEditing}
       />
-      {hasSuffixIcon && (
+      {props.hasSuffixIcon && (
         <View
-          style={[styles.suffixIconContainer, isInvalid && styles.inputInvalid]}
+          style={[styles.suffixIconContainer, props.isInvalid && styles.inputInvalid]}
         >
           <FontAwesome
-            name={suffixIcon}
+            name={props.suffixIcon}
             size={19}
             color={Colors.secondary800}
             onPress={() => setIsSecure((currentValue) => !currentValue)}
@@ -70,7 +70,7 @@ function Input({
       )}
     </View>
   );
-}
+});
 
 export default Input;
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Image,
   Alert,
+  TextInput,
 } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
@@ -19,6 +20,9 @@ import { authenticateUser } from "../../store/auth-action-creators";
 import authActions from "../../store/auth-slice";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import crashlytics from '@react-native-firebase/crashlytics';
+import analytics from '@react-native-firebase/analytics';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -47,40 +51,41 @@ function AuthForm({
   const [isRead, setIsRead] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const firebaseIsInitializing = useAppSelector(
-    (state) => state.auth.isInitializing
-  );
+  const emailRef = useRef<TextInput>(null);
+  const passRef = useRef<TextInput>(null);
+  const mobileRef = useRef<TextInput>(null);
+  const webClientId = remoteConfig().getValue('web_client_id');
 
   //configuring google signin
   GoogleSignin.configure({
-    webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+    webClientId: webClientId.asString(),
   });
 
   async function onGoogleButtonPress() {
+    crashlytics().log('user using google sign in');
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+    const { idToken, user } = await GoogleSignin.signIn();
 
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    await auth().signInWithCredential(googleCredential);
+    //logging google signin event
+    return analytics().logEvent("google_signed_in", {
+      googleIdToken: idToken,
+      userId: user.id,
+    });
   }
 
   useEffect(() => {
+    crashlytics().log('auth listener for user auth changes defined');
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
         const token = await user.getIdToken();
         dispatch(authenticateUser(token));
-        if (firebaseIsInitializing) {
-          dispatch(
-            authActions.setFirebaseInitialization({
-              isInitializing: false,
-            })
-          );
-        }
       }
     });
 
@@ -92,6 +97,7 @@ function AuthForm({
   }
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
+    crashlytics().log('handling changeText of TextInput');
     setCredentialsInvalid({
       email: false,
       fullName: false,
@@ -138,7 +144,10 @@ function AuthForm({
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "fullName")}
           value={enteredName}
+          blurOnSubmit={false}
+          onSubmitEditing={() => emailRef.current?.focus()}
           isInvalid={credentialsInvalid.fullName}
+          returnKeyType={"next"}
           icon="person-outline"
           placeholder="Full name"
           placeholderColor={Colors.secondary800}
@@ -146,10 +155,14 @@ function AuthForm({
       )}
       <Input
         onUpdateValue={updateInputValueHandler.bind(null, "email")}
+        ref={emailRef}
         value={enteredEmail}
+        blurOnSubmit={false}
         keyboardType="email-address"
+        onSubmitEditing={() => mobileRef.current?.focus()}
         icon="mail-outline"
         isInvalid={credentialsInvalid.email}
+        returnKeyType={"next"}
         placeholder="example@gmail.com"
         placeholderColor={Colors.secondary800}
       />
@@ -157,8 +170,12 @@ function AuthForm({
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "mobile")}
           value={enteredNumber}
+          onSubmitEditing={() => passRef.current?.focus()}
+          ref={mobileRef}
+          blurOnSubmit={false}
           isInvalid={credentialsInvalid.mobile}
           icon="person-outline"
+          returnKeyType={"next"}
           keyboardType="phone-pad"
           placeholder="Mobile number"
           placeholderColor={Colors.secondary800}
@@ -169,10 +186,13 @@ function AuthForm({
         onUpdateValue={updateInputValueHandler.bind(null, "password")}
         secure
         icon="lock-outline"
+        ref={passRef}
         hasSuffixIcon
         suffixIcon="eye-slash"
+        returnKeyType={"done"}
         value={enteredPassword}
         isInvalid={credentialsInvalid.password}
+        onSubmitEditing={submitHandler}
         placeholder="*********"
         placeholderColor={Colors.secondary800}
       />
@@ -254,9 +274,8 @@ function AuthForm({
               marginLeft={16}
               buttonBackgroundColor="white"
               onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log("Signed in with Google!")
-                )
+                onGoogleButtonPress()
+                  .then(() => console.log("Signed in with Google!"))
               }
               paddingHorizontal={12}
               paddingVertical={10}
@@ -320,9 +339,8 @@ function AuthForm({
               marginLeft={16}
               buttonBackgroundColor="white"
               onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log("Signed in with Google!")
-                )
+                onGoogleButtonPress()
+                  .then(() => console.log("Signed in with Google!"))
               }
               hasLeftExternalIcon
               leftExternalIcon={
