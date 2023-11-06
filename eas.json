@@ -15,7 +15,11 @@
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
       },
       "env": {
         "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
@@ -23,12 +27,13 @@
       }
     },
     "production": {
-      "env": {
-        "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
-        "EXPO_PUBLIC_NEWS_API_KEY": "13734acdd0a74dc0bd1878f093523604"
-      }
-    },
-    "test": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
       "env": {
         "EXPO_PUBLIC_WEB_CLIENT_ID":"814937812947-qqa63fpaajs5np696uui448699j8qp09.apps.googleusercontent.com",
         "EXPO_PUBLIC_NEWS_API_KEY": "13734acdd0a74dc0bd1878f093523604"

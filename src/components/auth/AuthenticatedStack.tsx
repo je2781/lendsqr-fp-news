@@ -38,7 +38,8 @@ export default function AuthenticatedStack() {
                       //prviding context for crash reports
                       crashlytics().log("testing crash");
                       throw new Error("app crashed");
-                    } catch (err) {
+                    } catch (err: any) {
+                      crashlytics().recordError(err);
                       Alert.alert("Crash", "App crashed");
                     }
                   }}
