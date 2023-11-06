@@ -2,11 +2,11 @@ export interface AuthRepoImpl {
   createUser: (
     email: string,
     password: string,
-  ) => Promise<string[]>;
+  ) => Promise<any>;
 
   verifyUser: (
     email: string,
     password: string,
-  ) => Promise<string[]>;
+  ) => Promise<any>;
 
 }

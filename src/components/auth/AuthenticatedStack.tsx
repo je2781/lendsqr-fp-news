@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NewsListing from "../../screens/news/NewsListing";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Colors from "../../constants/Colors";
@@ -6,7 +6,7 @@ import NewsDetails from "../../screens/news/NewsDetails";
 import { Alert, Button, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logoutUser } from "../../store/auth-action-creators";
 import crashlytics from "@react-native-firebase/crashlytics";
 import analytics from "@react-native-firebase/analytics";
@@ -16,6 +16,7 @@ const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function AuthenticatedStack() {
   const dispatch = useAppDispatch();
+
   return (
     <Navigator
       initialRouteName="Listing"
@@ -33,9 +34,13 @@ export default function AuthenticatedStack() {
                 <Button
                   title="Crash"
                   onPress={() => {
-                    //prviding context for crash reports
-                    crashlytics().log("testing crash");
-                    crashlytics().crash();
+                    try {
+                      //prviding context for crash reports
+                      crashlytics().log("testing crash");
+                      throw new Error("app crashed");
+                    } catch (err) {
+                      Alert.alert("Crash", "App crashed");
+                    }
                   }}
                   color={Colors.amber200}
                 />
@@ -61,13 +66,7 @@ export default function AuthenticatedStack() {
         }}
       />
       <Screen name="NewsDetails" component={NewsDetails} />
-      <Screen
-        name="WebView"
-        component={WebViewScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Screen name="WebView" component={WebViewScreen} />
     </Navigator>
   );
 }

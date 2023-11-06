@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Linking, BackHandler } from "react-native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {Linking} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
 
@@ -10,7 +10,8 @@ interface webViewProps {
 
 export default function WebBrowserScreen({ navigation, route }: webViewProps) {
   const [webViewUrl, setWebViewUrl] = useState<string>("");
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     async function openUrl() {
       // Open a URL using Linking.openUrl
       await Linking.openURL(`myapp://openWebView?url=${route.params.url}`);
@@ -34,20 +35,11 @@ export default function WebBrowserScreen({ navigation, route }: webViewProps) {
     return () => sub.remove();
   }, []);
 
-  useEffect(() => {
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-        navigation.goBack();
-        return true; // Prevent the default behavior
-    });
-
-    return () => {
-      sub.remove();
-    };
-  }, [navigation]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <WebView
+      testID="webview"
         source={{ uri: webViewUrl }} // Use a default URL or any initial URL
         javaScriptEnabled={true} // Enable JavaScript (optional)
         domStorageEnabled={true} // Enable local storage (optional)

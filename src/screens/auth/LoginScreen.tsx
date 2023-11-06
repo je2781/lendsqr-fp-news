@@ -19,6 +19,7 @@ import { useAppDispatch } from "../../store/hooks";
 import crashlytics from "@react-native-firebase/crashlytics";
 import analytics from "@react-native-firebase/analytics";
 import perf from "@react-native-firebase/perf";
+import { verifyUserPermission } from "../../util/helper/verifyPermissions";
 interface loginProps {
   loginAction: (token: string) => (dispatch: AppDispatch) => void;
 }
@@ -34,36 +35,43 @@ export default function LoginScreen({ loginAction }: loginProps) {
 
     setIsAuthenticating(true);
     try {
-      // starting a trace to record time it takes to sign user in
-      const trace = await perf().startTrace("user_sign_in");
+      //verifying user permissions for push notifications
+      const granted = await verifyUserPermission();
 
-      const [uid, token] = await authRepo.verifyUser(
-        input.email,
-        input.password
-      );
-      //setting context for crash report
-      crashlytics().log("user signed in");
-      await crashlytics().setUserId(uid);
+      if (granted) {
+        // starting a trace to record time it takes to sign user in
+        const trace = await perf().startTrace("user_sign_in");
 
-      // Define trace meta details
-      trace.putAttribute("user_id", uid);
+        const [uid, token] = await authRepo.verifyUser(
+          input.email,
+          input.password
+        );
 
-      //logging email/password signin event
-      await analytics().logEvent("user_signed_in", {
-        token: token,
-        userId: uid,
-      });
+        //setting context for crash report
+        crashlytics().log("user signed in");
+        await crashlytics().setUserId(uid);
 
-      // Stop the trace
-      await trace.stop();
-      
-      //dispatching action to update redux store that user is authenticated
-      dispatch(loginAction(token));
+        // Define trace meta details
+        trace.putAttribute("user_id", uid);
+
+        //logging email/password signin event
+        await analytics().logEvent("user_signed_in", {
+          token: token,
+          userId: uid,
+        });
+
+        // Stop the trace
+        await trace.stop();
+        //dispatching action to update redux store that user is authenticated
+        dispatch(loginAction(token));
+      } else {
+        throw new Error("Notifications Permissions denied");
+      }
     } catch (err: any) {
       crashlytics().recordError(err);
       Alert.alert(
         "Authentication failed!",
-        "Could not log you in. Either your credentials are wrong or account already exists"
+        "Could not log you in. Either account already exists, or app doesn't have the user permissions to proceed"
       );
       setIsAuthenticating(false);
     }

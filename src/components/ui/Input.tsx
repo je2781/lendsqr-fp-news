@@ -10,15 +10,16 @@ interface InputProps {
   secure?: boolean;
   icon?: any;
   suffixIcon?: any;
+  testID?: string;
   returnKeyType?: any;
   blurOnSubmit?: boolean;
   ref?: any;
   keyboardType?: any;
   placeholderColor?: any;
-  value: string;
+  value?: string;
   onSubmitEditing?: () => void;
   isInvalid?: boolean;
-  onUpdateValue: (value: string) => void;
+  onUpdateValue?: (value: string) => void;
 }
 
 
@@ -50,7 +51,8 @@ const Input = forwardRef<TextInput, InputProps>((
         returnKeyType={props.returnKeyType}
         secureTextEntry={isSecure ? props.secure : undefined}
         onChangeText={props.onUpdateValue}
-        value={props.value}
+        testID={props.testID}
+        value={props.value!}
         blurOnSubmit={props.blurOnSubmit}
         placeholder={props.placeholder}
         placeholderTextColor={props.placeholderColor}

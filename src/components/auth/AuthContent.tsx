@@ -76,7 +76,7 @@ function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentPro
   }
 
   return (
-    <View style={styles.authContent}>
+    <View style={styles.authContent} testID='authcontent'>
       <AuthForm
         isLogin={isLogin!}
         onSubmit={submitHandler}

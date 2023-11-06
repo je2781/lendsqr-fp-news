@@ -12,6 +12,7 @@ interface ButtonProps {
   hasRightExternalIcon?: boolean;
   borderRadius?: number;
   fontWeight?: any;
+  testID?: string;
   paddingHorizontal?: number;
   paddingVertical?: number;
   leftExternalIcon?: JSX.Element;
@@ -26,6 +27,7 @@ function Button({
   color,
   fontSize,
   isTransparent,
+  testID,
   buttonBackgroundColor,
   hasLeftExternalIcon,
   hasRightExternalIcon,
@@ -52,6 +54,7 @@ function Button({
         pressed && styles.pressed,
         isTransparent && styles.buttonTransparent,
       ]}
+      testID={testID}
       onPress={onPress}
     >
       <View

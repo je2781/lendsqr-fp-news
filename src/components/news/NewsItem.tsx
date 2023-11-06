@@ -15,13 +15,14 @@ import type { Article } from "../../types/types";
 import Colors from "../../constants/Colors";
 import Time from "./Time";
 import Card from "../ui/Card";
-import crashlytics from '@react-native-firebase/crashlytics';
-import analytics from '@react-native-firebase/analytics';
+import crashlytics from "@react-native-firebase/crashlytics";
+import analytics from "@react-native-firebase/analytics";
 interface NewsItemProps {
   article: Article;
+  testID?: string;
 }
 
-export default function NewsItem({ article }: NewsItemProps) {
+export default function NewsItem({ article, testID }: NewsItemProps) {
   const navigation = useNavigation();
   const { width } = useWindowDimensions();
 
@@ -35,27 +36,36 @@ export default function NewsItem({ article }: NewsItemProps) {
       <Card>
         <Pressable
           style={({ pressed }) => pressed && styles.pressed}
-          onPress={() => {
-            crashlytics().log('user pushes newsdetails screen onto newslisting screen');
+          onPress={async () => {
+
+            crashlytics().log(
+              "user pushing newsdetails screen onto newslisting screen"
+            );
+
+            analytics().logEvent("newsdetails_screen_active");
+
             navigation.dispatch(
               StackActions.push("NewsDetails", {
                 article: article,
               })
             );
+
           }}
+          testID='pressNewsItem'
         >
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: "row" }}>
             <View>
-              <View style={{maxWidth: width < 460 ? '79.5%' : '85%'}}>
-                <Text style={styles.title}>{article.title}</Text>
-                <Text style={styles.description}>{article.description}</Text>
+              <View style={{ maxWidth: width < 460 ? "79.5%" : "85%" }}>
+                <Text style={styles.title} testID="title">{article.title}</Text>
+                <Text style={styles.description} testID="description">{article.description}</Text>
               </View>
               <View style={styles.footer}>
                 <Time
                   date={new Date(article.published_date)}
                   backgroundColor={Colors.amber200}
+                  testID='time'
                 />
-                <Text style={styles.author}>Author: {article.author}</Text>
+                <Text style={styles.author} testID="author">Author: {article.author}</Text>
               </View>
             </View>
             <View style={styles.imageContainer}>
@@ -63,6 +73,7 @@ export default function NewsItem({ article }: NewsItemProps) {
                 source={require("../../assets/images/breaking-news.png")}
                 resizeMode="contain"
                 style={styles.foregroundImg}
+                testID="newsImage"
               />
             </View>
           </View>
@@ -78,7 +89,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "axiforma-w600",
     fontSize: 10,
-    textAlign: 'left'
+    textAlign: "left",
     // color: Colors.secondary800,
   },
   pressed: {
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     height: 80,
   },
   imageContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
   },

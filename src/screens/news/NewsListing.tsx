@@ -5,14 +5,12 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {
   ActivityIndicator,
   Alert,
-  Button,
   FlatList,
-  ScrollView,
+  SafeAreaView,
   View,
 } from "react-native";
 import NewsItem from "../../components/news/NewsItem";
 import { Article } from "../../types/types";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Colors from "../../constants/Colors";
 import authActions from "../../store/auth-slice";
@@ -79,6 +77,7 @@ export default function NewsListing() {
         <>
         <FlatList
           data={articlesArr}
+          testID="newsList"
           renderItem={({ item }) => <NewsItem article={item} />}
           keyExtractor={(item, index) => index.toString()}
         />

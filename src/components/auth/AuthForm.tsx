@@ -58,11 +58,12 @@ function AuthForm({
 
   //configuring google signin
   GoogleSignin.configure({
-    webClientId: webClientId.asString(),
+    webClientId: webClientId.asString() || process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
   });
 
   async function onGoogleButtonPress() {
     crashlytics().log('user using google sign in');
+    
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     // Get the users ID token
@@ -73,6 +74,11 @@ function AuthForm({
 
     // Sign-in the user with the credential
     await auth().signInWithCredential(googleCredential);
+
+    //providing contex for creash reports
+    crashlytics().log('user signed in with google');
+    await crashlytics().setUserId(user.id);
+
     //logging google signin event
     return analytics().logEvent("google_signed_in", {
       googleIdToken: idToken,
@@ -98,7 +104,7 @@ function AuthForm({
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     crashlytics().log('handling changeText of TextInput');
-    setCredentialsInvalid({
+    setCredentialsInvalid!({
       email: false,
       fullName: false,
       password: false,
@@ -139,13 +145,14 @@ function AuthForm({
   }
 
   return (
-    <View>
+    <View testID="authform">
       {!isLogin && (
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "fullName")}
           value={enteredName}
           blurOnSubmit={false}
           onSubmitEditing={() => emailRef.current?.focus()}
+          testID="fullNameI"
           isInvalid={credentialsInvalid.fullName}
           returnKeyType={"next"}
           icon="person-outline"
@@ -159,6 +166,7 @@ function AuthForm({
         value={enteredEmail}
         blurOnSubmit={false}
         keyboardType="email-address"
+        testID="emailI"
         onSubmitEditing={() => mobileRef.current?.focus()}
         icon="mail-outline"
         isInvalid={credentialsInvalid.email}
@@ -173,6 +181,7 @@ function AuthForm({
           onSubmitEditing={() => passRef.current?.focus()}
           ref={mobileRef}
           blurOnSubmit={false}
+          testID="mobileI"
           isInvalid={credentialsInvalid.mobile}
           icon="person-outline"
           returnKeyType={"next"}
@@ -188,6 +197,7 @@ function AuthForm({
         icon="lock-outline"
         ref={passRef}
         hasSuffixIcon
+        testID="passwordI"
         suffixIcon="eye-slash"
         returnKeyType={"done"}
         value={enteredPassword}
@@ -249,6 +259,7 @@ function AuthForm({
               <ActivityIndicator size="large" color={Colors.primary500} />
             ) : (
               <Button
+                testID="signinButton"
                 buttonBackgroundColor={Colors.primary500}
                 onPress={submitHandler}
                 color="white"
@@ -316,6 +327,7 @@ function AuthForm({
               <Button
                 buttonBackgroundColor={Colors.primary500}
                 onPress={submitHandler}
+                testID="registerButton"
                 color="white"
                 fontSize={14}
                 paddingHorizontal={12}

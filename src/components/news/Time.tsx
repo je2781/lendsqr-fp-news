@@ -4,12 +4,13 @@ import React from "react";
 interface timeProps {
   date: Date;
   backgroundColor: any;
+  testID?: string;
 }
 
-export default function Time({ date, backgroundColor }: timeProps) {
+export default function Time({ date, backgroundColor, testID }: timeProps) {
   return (
     <View style={[styles.rootContainer, { backgroundColor: backgroundColor }]}>
-      <Text style={styles.timeTextStyle}>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Text>
+      <Text style={styles.timeTextStyle} testID={testID}>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Text>
     </View>
   );
 }

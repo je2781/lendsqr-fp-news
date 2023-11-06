@@ -19,6 +19,7 @@ import perf from "@react-native-firebase/perf";
 import React from "react";
 import { AppDispatch } from "../../store";
 import { useAppDispatch } from "../../store/hooks";
+import { verifyUserPermission } from "../../util/helper/verifyPermissions";
 
 interface registerProps {
   registerAction: (token: string) => (dispatch: AppDispatch) => void;
@@ -38,37 +39,43 @@ export default function RegistrationScreen({ registerAction }: registerProps) {
 
     setIsAuthenticating(true);
     try {
-      // starting a trace to record time it takes to register user
-      const trace = await perf().startTrace("user_registration");
+      //verifying user permissions for push notifications
+      const granted = await verifyUserPermission();
+      if (granted) {
+        // starting a trace to record time it takes to register user
+        const trace = await perf().startTrace("user_registration");
 
-      const [uid, token] = await authRepo.createUser(
-        input.email,
-        input.password
-      );
+        const [uid, token] = await authRepo.createUser(
+          input.email,
+          input.password
+        );
 
-      //providing context for crash reports
-      crashlytics().log("user registered");
-      await crashlytics().setUserId(uid);
+        //providing context for crash reports
+        crashlytics().log("user registered");
+        await crashlytics().setUserId(uid);
 
-      // Define trace meta details
-      trace.putAttribute("user_id", uid);
+        // Define trace meta details
+        trace.putAttribute("user_id", uid);
 
-      //logging email/password signup event
-      await analytics().logEvent("registration", {
-        token: token,
-        userId: uid,
-      });
+        //logging email/password signup event
+        await analytics().logEvent("registration", {
+          token: token,
+          userId: uid,
+        });
 
-      // Stop the trace
-      await trace.stop();
+        // Stop the trace
+        await trace.stop();
 
-      //dispatching action to update redux store that user is authenticated
-      dispatch(registerAction(token));
+        //dispatching action to update redux store that user is authenticated
+        dispatch(registerAction(token));
+      } else {
+        throw new Error("Notifications Permissions denied");
+      }
     } catch (err: any) {
       crashlytics().recordError(err);
       Alert.alert(
         "Authentication failed!",
-        "Could not register your account. Either your credentials are wrong or account already exists"
+        "Could not register your account. Either account already exists, or app doesn't have the user permissions to proceed"
       );
       setIsAuthenticating(false);
     }
