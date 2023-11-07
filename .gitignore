@@ -79,3 +79,4 @@ yarn-error.*
 appcenter-config.json
 android/app/@je278__lendsqrFpNews.jks
 android/app/debug.keystore
+eas.json
