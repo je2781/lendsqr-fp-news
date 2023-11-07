@@ -102,6 +102,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release{
+            storeFile file('@je278__lendsqrFpNews.jks')
+            storePassword '53e130a02ded6a0ce313e76a38185a21'
+            keyAlias '5224e41ce964165efa108a9ff8c98100'
+            keyPassword '63c651a391596973945e9788109d4ab9'
+        }
     }
     buildTypes {
         debug {
