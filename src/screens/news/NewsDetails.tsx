@@ -22,9 +22,9 @@ export default function NewsDetails({ navigation, route }: newsDetailsProps) {
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 16 }}>
       <View>
-        {article.image_url != null ? (
+        {article.image_url ? (
           <Image
-            source={article.image_url}
+            source={{uri: article.image_url}}
             alt="Image of article"
             style={{ width: "100%", height: 150, resizeMode: "cover" }}
           />

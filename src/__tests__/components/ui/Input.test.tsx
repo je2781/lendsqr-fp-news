@@ -27,7 +27,7 @@ describe('<TextInput />', () => {
      */
     fireEvent.changeText(textInput, 'hi');
 
-    // Asserting if given mock method has stored test input inside test input variable.
+    // Asserting that mock method has stored test input inside test input variable.
     expect(userInput).toBe('hi');
   });
 });
