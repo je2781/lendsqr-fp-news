@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HStack, Avatar } from "@react-native-material/core";
 import newsRepo from "../../repository/news/news-repo";
-import crashlytics from '@react-native-firebase/crashlytics';
+import crashlytics from "@react-native-firebase/crashlytics";
 import {
   ActivityIndicator,
   Alert,
@@ -22,7 +22,7 @@ export default function NewsListing() {
   useEffect(() => {
     async function retrieveNewsArticles() {
       try {
-        crashlytics().log('retrieving articles from news api');
+        crashlytics().log("retrieving articles from news api");
         const articles = await newsRepo.searchNews();
         for (const article of articles) {
           setArticlesArr((prevState) => [
@@ -46,7 +46,7 @@ export default function NewsListing() {
           "Could not download news articles for your region"
         );
       } finally {
-        crashlytics().log('articles retrieved from news api');
+        crashlytics().log("articles retrieved from news api");
         dispatch(
           authActions.setNewsApiInitialization({
             isInitializing: false,
@@ -74,14 +74,14 @@ export default function NewsListing() {
           <ActivityIndicator size="large" color={Colors.primary500} />
         </View>
       ) : (
-        <>
-        <FlatList
-          data={articlesArr}
-          testID="newsList"
-          renderItem={({ item }) => <NewsItem article={item} />}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        </>
+        <View style={{ paddingVertical: 8 }}>
+          <FlatList
+            data={articlesArr}
+            testID="newsList"
+            renderItem={({ item }) => <NewsItem article={item} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
       )}
     </SafeAreaView>
   );

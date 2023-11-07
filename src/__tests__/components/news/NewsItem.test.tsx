@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, act } from "@testing-library/react-native";
 import { Provider } from "react-redux"; // Updated import
 import store from "../../../store/index";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,8 +21,6 @@ jest.mock("@react-native-firebase/analytics", () => () => ({
 
 describe("<NewsItem/>", () => {
   it("Displays one artice", async () => {
-    //mocking NewsItem props that are functions
-
     const article = {
       description: "description",
       title: "title",
@@ -53,8 +51,9 @@ describe("<NewsItem/>", () => {
     // Asserting if the value prop of the TextInputs have the test values .
     expect(newsImage.props.source).toBeTruthy();
     expect(time).toBeTruthy();
-    expect(title.props.children).toBe('title');
-    expect(desc.props.children).toBe('description');
-    expect(author.props.children).toContain('Mr Ross');
+    expect(title.props.children).toBe("title");
+    expect(desc.props.children).toBe("description");
+    expect(author.props.children).toContain("Mr Ross");
   });
+  
 });

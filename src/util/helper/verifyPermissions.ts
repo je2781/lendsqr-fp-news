@@ -14,7 +14,7 @@ export async function verifyUserPermission() {
     } else {
       return false;
     }
-  } else {
+  } else if(Platform.OS === "android") {
     const authStatus = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
     );

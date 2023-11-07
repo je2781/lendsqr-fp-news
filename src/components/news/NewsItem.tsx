@@ -19,10 +19,9 @@ import crashlytics from "@react-native-firebase/crashlytics";
 import analytics from "@react-native-firebase/analytics";
 interface NewsItemProps {
   article: Article;
-  testID?: string;
 }
 
-export default function NewsItem({ article, testID }: NewsItemProps) {
+export default function NewsItem({ article}: NewsItemProps) {
   const navigation = useNavigation();
   const { width } = useWindowDimensions();
 
@@ -35,6 +34,7 @@ export default function NewsItem({ article, testID }: NewsItemProps) {
     >
       <Card>
         <Pressable
+          testID='pressNewsItem'
           style={({ pressed }) => pressed && styles.pressed}
           onPress={async () => {
 
@@ -51,7 +51,6 @@ export default function NewsItem({ article, testID }: NewsItemProps) {
             );
 
           }}
-          testID='pressNewsItem'
         >
           <View style={{ flexDirection: "row" }}>
             <View>
