@@ -16,7 +16,7 @@ A different news api was used https://newsapi.org, as the original one was tied 
 
 ## How to run the app
 
-From the main directory, run (npm run android) for android, and (npm run ios) for ios. To the run (npm t).
+From the main directory, run (npm run android) for android, and (npm run ios) for ios. To test run (npm t).
 
 ## PreRelease
 
