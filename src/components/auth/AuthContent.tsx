@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import AuthForm from "./AuthForm";
 import React from "react";
@@ -8,9 +8,10 @@ interface AuthContentProps {
   isLogin?: boolean;
   onAuthenticate: (input: { email: string; password: string }) => void;
   isAuthenticating: boolean;
+  setIsAuthenticating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentProps) {
+function AuthContent({isLogin, onAuthenticate, isAuthenticating, setIsAuthenticating}: AuthContentProps) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
@@ -81,6 +82,7 @@ function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentPro
         isLogin={isLogin!}
         onSubmit={submitHandler}
         isAuthenticating={isAuthenticating}
+        setIsAuthenticating={setIsAuthenticating}
         credentialsInvalid={credentialsInvalid}
         setCredentialsInvalid={setCredentialsInvalid}
       />
