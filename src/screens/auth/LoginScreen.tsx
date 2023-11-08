@@ -71,7 +71,7 @@ export default function LoginScreen({ loginAction }: loginProps) {
       crashlytics().recordError(err);
       Alert.alert(
         "Authentication failed!",
-        "Could not log you in. Either account already exists, or app doesn't have the user permissions to proceed"
+        "Could not log you in. Either account doesn't exists, or app doesn't have the user permissions to proceed"
       );
       setIsAuthenticating(false);
     }

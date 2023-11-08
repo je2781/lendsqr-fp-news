@@ -46,8 +46,8 @@ function Root() {
         //setting default values for env variables if fetch from firebase backend  fails
         remoteConfig()
           .setDefaults({
-            web_client_id: process.env.EXPO_PUBLIC_WEB_CLIENT_ID!,
-            news_api_key: process.env.EXPO_PUBLIC_NEWS_API_KEY!,
+            'web_client_id': process.env.EXPO_PUBLIC_WEB_CLIENT_ID!,
+            'news_api_key': process.env.EXPO_PUBLIC_NEWS_API_KEY!,
           })
           .then(() => remoteConfig().fetchAndActivate())
           .then((fetchedRemotely) => {

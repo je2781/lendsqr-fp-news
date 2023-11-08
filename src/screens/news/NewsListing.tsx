@@ -74,7 +74,7 @@ export default function NewsListing() {
           <ActivityIndicator size="large" color={Colors.primary500} />
         </View>
       ) : (
-        <View style={{ paddingVertical: 8 }}>
+        <View style={{ paddingVertical: 16 }}>
           <FlatList
             data={articlesArr}
             testID="newsList"
