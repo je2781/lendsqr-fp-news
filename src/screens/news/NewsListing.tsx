@@ -18,6 +18,10 @@ import authActions from "../../store/auth-slice";
 export default function NewsListing() {
   const [articlesArr, setArticlesArr] = useState<Article[]>([]);
   const dispatch = useAppDispatch();
+  
+  const newsApiIsInitializing = useAppSelector(
+    (state) => state.auth.isInitializing
+  );
 
   useEffect(() => {
     async function retrieveNewsArticles() {
@@ -58,9 +62,6 @@ export default function NewsListing() {
     retrieveNewsArticles();
   }, []);
 
-  const newsApiIsInitializing = useAppSelector(
-    (state) => state.auth.isInitializing
-  );
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 8 }}>
       {newsApiIsInitializing ? (
