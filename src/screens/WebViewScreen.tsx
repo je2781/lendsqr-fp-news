@@ -1,7 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import {Linking} from "react-native";
+import { ActivityIndicator, Linking, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
+import Colors from "../constants/Colors";
 
 interface webViewProps {
   navigation: any;
@@ -9,7 +10,7 @@ interface webViewProps {
 }
 
 export default function WebBrowserScreen({ navigation, route }: webViewProps) {
-  const [webViewUrl, setWebViewUrl] = useState<string>("");
+  const [webViewUrl, setWebViewUrl] = useState<string | undefined>();
 
   useLayoutEffect(() => {
     async function openUrl() {
@@ -35,15 +36,26 @@ export default function WebBrowserScreen({ navigation, route }: webViewProps) {
     return () => sub.remove();
   }, []);
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <WebView
-      testID="webview"
-        source={{ uri: webViewUrl }} // Use a default URL or any initial URL
-        javaScriptEnabled={true} // Enable JavaScript (optional)
-        domStorageEnabled={true} // Enable local storage (optional)
-      />
+      {!webViewUrl ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.primary500} />
+        </View>
+      ) : (
+        <WebView
+          testID="webview"
+          source={{ uri: webViewUrl }} // Use a default URL or any initial URL
+          javaScriptEnabled={true} // Enable JavaScript (optional)
+          domStorageEnabled={true} // Enable local storage (optional)
+        />
+      )}
     </SafeAreaView>
   );
 }
