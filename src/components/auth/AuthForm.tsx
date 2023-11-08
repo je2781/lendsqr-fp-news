@@ -37,7 +37,6 @@ interface AuthFormProps {
   isAuthenticating: boolean;
   setCredentialsInvalid: React.Dispatch<React.SetStateAction<any>>;
   credentialsInvalid: any;
-  setIsAuthenticating?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AuthForm({
@@ -45,7 +44,6 @@ function AuthForm({
   onSubmit,
   isAuthenticating,
   setCredentialsInvalid,
-  setIsAuthenticating,
   credentialsInvalid,
 }: AuthFormProps) {
   const [enteredEmail, setEnteredEmail] = useState<string>("");
@@ -53,6 +51,7 @@ function AuthForm({
   const [enteredPassword, setEnteredPassword] = useState<string>("");
   const [enteredNumber, setEnteredNumber] = useState<string>("");
   const [isRead, setIsRead] = useState<boolean>(false);
+  const [googleIsAuthenticating, setGoogleIsAuthenticating] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const emailRef = useRef<TextInput>(null);
@@ -67,7 +66,7 @@ function AuthForm({
   });
 
   async function onGoogleButtonPress() {
-    setIsAuthenticating!(true);
+    setGoogleIsAuthenticating(true);
 
     crashlytics().log("user using google sign in");
 
@@ -114,7 +113,7 @@ function AuthForm({
         "Google Authentication failed!",
         "Either account doesn't exists, or app doesn't have the user permissions to proceed"
       );
-      setIsAuthenticating!(false);
+      setGoogleIsAuthenticating(false);
     }
   }
 
@@ -331,7 +330,9 @@ function AuthForm({
                 <View style={styles.alternateTextTrailingLine}></View>
               </View>
             </View>
-            <Button
+            {googleIsAuthenticating ? (
+              <ActivityIndicator size="large" color={Colors.primary500} />
+            ) :<Button
               marginLeft={16}
               buttonBackgroundColor="white"
               onPress={() =>
@@ -352,7 +353,7 @@ function AuthForm({
               color={Colors.secondary500}
             >
               {Strings.HLoginGoogle}
-            </Button>
+            </Button>}
             <View style={{ marginTop: 62, alignItems: "center" }}>
               <Text>
                 <View style={styles.buttonPrefixTextContainer}>
@@ -398,28 +399,32 @@ function AuthForm({
                 <View style={styles.alternateTextTrailingLine}></View>
               </View>
             </View>
-            <Button
-              marginLeft={16}
-              buttonBackgroundColor="white"
-              onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log("Signed in with Google!")
-                )
-              }
-              hasLeftExternalIcon
-              leftExternalIcon={
-                <Image
-                  source={require("../../assets/images/google_icon.png")}
-                />
-              }
-              fontSize={16}
-              color={Colors.secondary500}
-              paddingHorizontal={12}
-              paddingVertical={10}
-              borderRadius={8}
-            >
-              {Strings.HRegisterGoogle}
-            </Button>
+            {googleIsAuthenticating ? (
+              <ActivityIndicator size="large" color={Colors.primary500} />
+            ) : (
+              <Button
+                marginLeft={16}
+                buttonBackgroundColor="white"
+                onPress={() =>
+                  onGoogleButtonPress().then(() =>
+                    console.log("Signed in with Google!")
+                  )
+                }
+                hasLeftExternalIcon
+                leftExternalIcon={
+                  <Image
+                    source={require("../../assets/images/google_icon.png")}
+                  />
+                }
+                fontSize={16}
+                color={Colors.secondary500}
+                paddingHorizontal={12}
+                paddingVertical={10}
+                borderRadius={8}
+              >
+                {Strings.HRegisterGoogle}
+              </Button>
+            )}
             <View style={{ marginTop: 16, alignItems: "center" }}>
               <Text>
                 <View style={styles.buttonPrefixTextContainer}>

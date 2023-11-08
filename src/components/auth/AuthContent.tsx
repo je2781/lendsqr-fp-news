@@ -8,10 +8,9 @@ interface AuthContentProps {
   isLogin?: boolean;
   onAuthenticate: (input: { email: string; password: string }) => void;
   isAuthenticating: boolean;
-  setIsAuthenticating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function AuthContent({isLogin, onAuthenticate, isAuthenticating, setIsAuthenticating}: AuthContentProps) {
+function AuthContent({isLogin, onAuthenticate, isAuthenticating}: AuthContentProps) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
@@ -82,7 +81,6 @@ function AuthContent({isLogin, onAuthenticate, isAuthenticating, setIsAuthentica
         isLogin={isLogin!}
         onSubmit={submitHandler}
         isAuthenticating={isAuthenticating}
-        setIsAuthenticating={setIsAuthenticating}
         credentialsInvalid={credentialsInvalid}
         setCredentialsInvalid={setCredentialsInvalid}
       />

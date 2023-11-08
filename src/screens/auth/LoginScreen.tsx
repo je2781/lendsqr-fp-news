@@ -89,7 +89,6 @@ export default function LoginScreen({ loginAction }: loginProps) {
                 isLogin={true}
                 onAuthenticate={handleLogin}
                 isAuthenticating={isAuthenticating}
-                setIsAuthenticating={setIsAuthenticating}
               />
             </KeyboardAvoidingView>
           </ScrollView>
