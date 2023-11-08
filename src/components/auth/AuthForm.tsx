@@ -160,7 +160,7 @@ function AuthForm({
           placeholderColor={Colors.secondary800}
         />
       )}
-      <Input
+      {!isLogin && <Input
         onUpdateValue={updateInputValueHandler.bind(null, "email")}
         ref={emailRef}
         value={enteredEmail}
@@ -173,7 +173,21 @@ function AuthForm({
         returnKeyType={"next"}
         placeholder="example@gmail.com"
         placeholderColor={Colors.secondary800}
-      />
+      />}
+      {isLogin && <Input
+        onUpdateValue={updateInputValueHandler.bind(null, "email")}
+        ref={emailRef}
+        value={enteredEmail}
+        blurOnSubmit={false}
+        keyboardType="email-address"
+        testID="emailI"
+        onSubmitEditing={() => passRef.current?.focus()}
+        icon="mail-outline"
+        isInvalid={credentialsInvalid.email}
+        returnKeyType={"next"}
+        placeholder="example@gmail.com"
+        placeholderColor={Colors.secondary800}
+      />}
       {!isLogin && (
         <Input
           onUpdateValue={updateInputValueHandler.bind(null, "mobile")}
