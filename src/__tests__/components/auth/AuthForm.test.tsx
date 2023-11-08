@@ -44,6 +44,12 @@ jest.mock("@react-native-firebase/perf", () => () => {
     stopTrace: jest.fn()
   };
 });
+jest.mock("@react-native-firebase/messaging", () => () => {
+  return {
+    requestPermission: jest.fn(),
+   
+  };
+});
 
 describe("<AuthForm/>", () => {
   it("Calls onChangeText on TextInputs", async () => {
