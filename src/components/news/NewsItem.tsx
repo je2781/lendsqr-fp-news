@@ -19,9 +19,10 @@ import crashlytics from "@react-native-firebase/crashlytics";
 import analytics from "@react-native-firebase/analytics";
 interface NewsItemProps {
   article: Article;
+  testID?: string;
 }
 
-export default function NewsItem({ article}: NewsItemProps) {
+export default function NewsItem({ article, testID }: NewsItemProps) {
   const navigation = useNavigation();
   const { width } = useWindowDimensions();
 
@@ -34,10 +35,9 @@ export default function NewsItem({ article}: NewsItemProps) {
     >
       <Card>
         <Pressable
-          testID='pressNewsItem'
+          testID={testID}
           style={({ pressed }) => pressed && styles.pressed}
           onPress={async () => {
-
             crashlytics().log(
               "user pushing newsdetails screen onto newslisting screen"
             );
@@ -49,22 +49,27 @@ export default function NewsItem({ article}: NewsItemProps) {
                 article: article,
               })
             );
-
           }}
         >
           <View style={{ flexDirection: "row" }}>
             <View>
               <View style={{ maxWidth: width < 460 ? "79.5%" : "85%" }}>
-                <Text style={styles.title} testID="title">{article.title}</Text>
-                <Text style={styles.description} testID="description">{article.description}</Text>
+                <Text style={styles.title} testID="title">
+                  {article.title}
+                </Text>
+                <Text style={styles.description} testID="description">
+                  {article.description}
+                </Text>
               </View>
               <View style={styles.footer}>
                 <Time
                   date={new Date(article.published_date)}
                   backgroundColor={Colors.primary500}
-                  testID='time'
+                  testID="time"
                 />
-                <Text style={styles.author} testID="author">Author: {article.author}</Text>
+                <Text style={styles.author} testID="author">
+                  Author: {article.author}
+                </Text>
               </View>
             </View>
             <View style={styles.imageContainer}>

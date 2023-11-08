@@ -43,10 +43,11 @@ export default function NewsDetails({ navigation, route }: newsDetailsProps) {
         <Text>
           For full article visit:{" "}
           <Text
+          testID="articleUrl"
             style={{ color: "blue" }}
             onPress={async () => {
               navigation.dispatch(
-                StackActions.replace("WebView", {
+                StackActions.push("WebView", {
                   url: article.article_url
                 })
               );

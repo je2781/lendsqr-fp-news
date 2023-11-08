@@ -8,7 +8,6 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import authRepo from "../../repository/auth/auth-repo";
 import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
@@ -26,7 +25,6 @@ interface loginProps {
 
 export default function LoginScreen({ loginAction }: loginProps) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
 
   async function handleLogin(input: { email: string; password: string }) {
@@ -62,8 +60,6 @@ export default function LoginScreen({ loginAction }: loginProps) {
 
         // Stop the trace
         await trace.stop();
-        //dispatching action to update redux store that user is authenticated
-        dispatch(loginAction(token));
       } else {
         throw new Error("Notifications Permissions denied");
       }

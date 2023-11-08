@@ -3,6 +3,7 @@ import {render, fireEvent} from '@testing-library/react-native';
 
 import Input from '../../../components/ui/Input';
 
+
 describe('<TextInput />', () => {
   it('Calls onChangeText', async () => {
     //defining variable to collect test input

@@ -8,7 +8,6 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
 import AuthContent from "../../components/auth/AuthContent";
@@ -27,7 +26,6 @@ interface registerProps {
 
 export default function RegistrationScreen({ registerAction }: registerProps) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
 
   async function handleRegistration(input: {
@@ -65,9 +63,6 @@ export default function RegistrationScreen({ registerAction }: registerProps) {
 
         // Stop the trace
         await trace.stop();
-
-        //dispatching action to update redux store that user is authenticated
-        dispatch(registerAction(token));
       } else {
         throw new Error("Notifications Permissions denied");
       }

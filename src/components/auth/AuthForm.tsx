@@ -122,6 +122,7 @@ function AuthForm({
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
         const token = await user.getIdToken();
+        //dispatching action to update redux store that user is authenticated
         dispatch(authenticateUser(token));
       }
     });

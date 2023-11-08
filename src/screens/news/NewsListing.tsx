@@ -18,7 +18,7 @@ import authActions from "../../store/auth-slice";
 export default function NewsListing() {
   const [articlesArr, setArticlesArr] = useState<Article[]>([]);
   const dispatch = useAppDispatch();
-  
+
   const newsApiIsInitializing = useAppSelector(
     (state) => state.auth.isInitializing
   );
@@ -78,9 +78,8 @@ export default function NewsListing() {
         <View style={{ paddingVertical: 16 }}>
           <FlatList
             data={articlesArr}
-            testID="newsList"
-            renderItem={({ item }) => <NewsItem article={item} />}
-            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => <NewsItem article={item}/>}
+            keyExtractor={(_, index) => index.toString()}
           />
         </View>
       )}
