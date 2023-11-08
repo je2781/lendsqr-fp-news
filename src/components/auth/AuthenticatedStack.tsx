@@ -43,7 +43,7 @@ export default function AuthenticatedStack() {
                       Alert.alert("Crash", "App crashed");
                     }
                   }}
-                  color={Colors.amber200}
+                  color={Colors.primary500}
                 />
                 <TouchableOpacity
                   onPress={() => {

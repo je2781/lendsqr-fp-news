@@ -61,7 +61,7 @@ export default function NewsItem({ article}: NewsItemProps) {
               <View style={styles.footer}>
                 <Time
                   date={new Date(article.published_date)}
-                  backgroundColor={Colors.amber200}
+                  backgroundColor={Colors.primary500}
                   testID='time'
                 />
                 <Text style={styles.author} testID="author">Author: {article.author}</Text>
