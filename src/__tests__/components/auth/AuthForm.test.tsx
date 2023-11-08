@@ -38,6 +38,12 @@ jest.mock("@react-native-firebase/remote-config", () => () => {
     })  
   };
 });
+jest.mock("@react-native-firebase/perf", () => () => {
+  return {
+    startTrace: jest.fn(),
+    stopTrace: jest.fn()
+  };
+});
 
 describe("<AuthForm/>", () => {
   it("Calls onChangeText on TextInputs", async () => {

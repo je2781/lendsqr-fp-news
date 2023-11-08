@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
 import remoteConfig from '@react-native-firebase/remote-config';
+import perf from "@react-native-firebase/perf";
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -66,6 +67,10 @@ function AuthForm({
     
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+    // starting a trace to record time it takes to sign user in
+    const trace = await perf().startTrace("google_sign_in");
+
     // Get the users ID token
     const { idToken, user } = await GoogleSignin.signIn();
 
@@ -75,7 +80,10 @@ function AuthForm({
     // Sign-in the user with the credential
     await auth().signInWithCredential(googleCredential);
 
-    //providing contex for creash reports
+    // Stop the trace
+    await trace.stop();
+
+    //providing contex for crash reports
     crashlytics().log('user signed in with google');
     await crashlytics().setUserId(user.id);
 
